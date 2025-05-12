@@ -601,44 +601,49 @@ class _HomepageState extends State<Homepage> {
               ),
 
               // Forecast List
-              if (showForecast)
-                Positioned(
-                  bottom: 100,
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                    height: 250,
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: oneMonthForecast.length,
-                      itemBuilder: (context, index) {
-                        var item = oneMonthForecast[index];
-                        return Container(
-                          width: 130,
-                          margin: EdgeInsets.symmetric(horizontal: 8),
-                          padding: EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: Colors.black.withBlue(85),
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(item["day"], style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                              Text(item["date"], style: TextStyle(color: Colors.white70, fontSize: 12)),
-                              SizedBox(height: 8),
-                              Image.asset(item["icon"], height: 40),
-                              SizedBox(height: 8),
-                              Text("${item["temp"]}°C", style: TextStyle(color: Colors.white)),
-                              Text("${item["humidity"]}%", style: TextStyle(color: Colors.white70, fontSize: 12)),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ),
+             // Forecast List
+if (showForecast)
+  Positioned(
+    bottom: 100,
+    left: 0,
+    right: 0,
+    child: Container(
+      height: 250,
+      padding: EdgeInsets.symmetric(horizontal: 10),
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: oneMonthForecast.length,
+        itemBuilder: (context, index) {
+          var item = oneMonthForecast[index];
+          String condition = item["condition"] ?? "Clear";
+          String iconImage = getWeatherIcon(condition); // custom function
+          
+          return Container(
+            width: 130,
+            margin: EdgeInsets.symmetric(horizontal: 8),
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.black.withBlue(85),
+              borderRadius: BorderRadius.circular(15),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(item["day"] ?? "--", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                Text(item["date"] ?? "--", style: TextStyle(color: Colors.white70, fontSize: 12)),
+                SizedBox(height: 8),
+                Image.asset(iconImage, width: 50, height: 50),
+                SizedBox(height: 8),
+                Text("${item["temp"]?.toStringAsFixed(0) ?? "--"}°C", style: TextStyle(color: Colors.white)),
+                Text("Humidity: ${item["humidity"]?.toStringAsFixed(0) ?? "--"}%", style: TextStyle(color: Colors.white70, fontSize: 12)),
+              ],
+            ),
+          );
+        },
+      ),
+    ),
+  ),
+
              ],
           ),
         ),
